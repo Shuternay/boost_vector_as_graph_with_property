@@ -67,7 +67,7 @@ namespace boost {
             }
 
             void decrement() {
-                ++this->base_reference().second;
+                --this->base_reference().second;
             }
         };
 
