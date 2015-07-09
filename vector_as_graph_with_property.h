@@ -18,8 +18,9 @@ namespace boost {
     struct my_vector_as_graph_traversal_tag
             : public vertex_list_graph_tag,
               public adjacency_graph_tag,
-//              public random_access_traversal_tag,
-              public bidirectional_graph_tag,
+              public random_access_traversal_tag,
+//              public bidirectional_graph_tag,
+              public incidence_graph_tag,
               public edge_list_graph_tag {
     };
 
@@ -39,6 +40,7 @@ namespace boost {
         typedef allow_parallel_edge_tag edge_parallel_category;
         typedef int vertices_size_type;
         typedef int edges_size_type;
+        typedef size_t degree_size_type;
         typedef my_vector_as_graph_traversal_tag traversal_category;
 
         class out_edge_iterator : public iterator_adaptor<
@@ -46,7 +48,8 @@ namespace boost {
                 edge_descriptor,
                 edge_descriptor,
                 bidirectional_traversal_tag,
-                edge_descriptor &, edge_descriptor *> {
+                edge_descriptor &,
+                ptrdiff_t> {
 
         public:
             out_edge_iterator() : out_edge_iterator::iterator_adaptor_(std::make_pair(0, nullptr)) { }
@@ -102,6 +105,13 @@ namespace boost {
     target(typename graph_traits<std::vector<std::vector<std::pair<int, WeightType>>>>::edge_descriptor e,
            const std::vector<std::vector<std::pair<int, WeightType>>> &g) {
         return e.second->first;
+    }
+
+    template<class WeightType>
+    typename graph_traits<std::vector<std::vector<std::pair<int, WeightType>>>>::degree_size_type
+    out_degree(typename graph_traits<std::vector<std::vector<std::pair<int, WeightType>>>>::vertex_descriptor u,
+               const std::vector<std::vector<std::pair<int, WeightType>>> &g) {
+        return (int) g[u].size();
     }
 
     template<class WeightType>

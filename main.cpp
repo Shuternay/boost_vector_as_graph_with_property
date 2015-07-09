@@ -9,8 +9,12 @@
 
 #include "vector_as_graph_with_property.h"
 
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/graph_concepts.hpp>
+#include <boost/graph/overloading.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths_no_color_map.hpp>
+#include <boost/concept/assert.hpp>
 
 
 class Graph {
@@ -85,6 +89,9 @@ public:
     int findShortestPathBoostDijkstraOnVector(size_t from, size_t to) {
         --from;
         --to;
+
+        BOOST_CONCEPT_ASSERT(( boost::IncidenceGraphConcept< std::vector<std::vector<std::pair<int, int>>> > ));
+
 
         typedef typename boost::graph_traits<std::vector<std::vector<std::pair<int, int>>>>::vertex_descriptor vertex_descriptor;
 
